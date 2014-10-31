@@ -17,7 +17,3 @@ class Status(object):
     NEW = "new"
     DOWNLOADING = "downloading"
     COMPLETE = "complete"
-
-
-if __name__ == "__main__":
-    db.create_table(Download, True)

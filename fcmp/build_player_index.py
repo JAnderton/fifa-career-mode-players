@@ -3,8 +3,7 @@ import sys
 
 from BeautifulSoup import BeautifulSoup
 
-from db_models import Download, Status
-
+from db_models import Download, Status, db
 
 reload(sys)
 sys.setdefaultencoding("latin-1")
@@ -32,5 +31,7 @@ def __insert_data__(data_tuples):
 
 
 if __name__ == "__main__":
+    db.create_table(Download, True)
+
     for page_count in range(0, 660):
         __insert_data__(find_players(BeautifulSoup(__download_page__(page_count))))
