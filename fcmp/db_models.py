@@ -1,6 +1,10 @@
 from peewee import Model, IntegerField, CharField, SqliteDatabase
+import os
 
-db = SqliteDatabase('resources/database/players.db')
+__db_path__ = 'resources/database/players.db'
+if not os.path.exists(os.path.dirname(__db_path__)):
+    os.makedirs(os.path.dirname(__db_path__))
+db = SqliteDatabase(__db_path__)
 
 
 class Download(Model):
