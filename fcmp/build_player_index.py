@@ -8,21 +8,6 @@ from BeautifulSoup import BeautifulSoup
 
 from db_models import Download, Status, db
 
-reload(sys)
-sys.setdefaultencoding("latin-1")
-
-for attempt in range(0, 2):
-    try:
-        logging.config.fileConfig('../conf/logging.conf')
-    except IOError as e:
-        os.makedirs(os.path.dirname(e.filename))
-    else:
-        break
-else:
-    print "Unable to create a directory for the log file. Exiting"
-    exit()
-logger = logging.getLogger()
-
 
 def find_players(players_soup):
     for tr in players_soup.table.tbody.findAll('tr'):
@@ -48,8 +33,31 @@ def __insert_data__(data_tuples):
         Download.create(name=data[0], url=data[1], status=data[2])
 
 
-if __name__ == "__main__":
+def __setup__():
+    # Encoding
+    reload(sys)
+    sys.setdefaultencoding("latin-1")
+
+    # Logging
+    for attempt in range(0, 2):
+        try:
+            logging.config.fileConfig('../conf/logging.conf')
+        except IOError as e:
+            os.makedirs(os.path.dirname(e.filename))
+        else:
+            break
+    else:
+        print "Unable to create a directory for the log file. Exiting"
+        exit()
+    global logger
+    logger = logging.getLogger()
+
+    # Database init
     db.create_table(Download, True)
+
+
+if __name__ == "__main__":
+    __setup__()
 
     for page_count in range(0, 660):
         __insert_data__(find_players(BeautifulSoup(__download_page__(page_count))))
