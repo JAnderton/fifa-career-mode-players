@@ -2,6 +2,7 @@ import logging
 import logging.config
 import os
 import sys
+import urllib2
 
 from BeautifulSoup import BeautifulSoup
 
@@ -22,7 +23,6 @@ def __download_page__(page_number):
     logger.info("Processing page %d", page_number)
     link = "http://www.futwiz.com/en/career-mode/players?page=%s" % page_number
 
-    # return open('../tests/resources/html/players-0.html', 'r').read()
     return urllib2.urlopen(urllib2.Request(link, headers={'User-Agent': 'Mozilla/5.0'}))
 
 
