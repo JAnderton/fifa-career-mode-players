@@ -1,6 +1,6 @@
 from peewee import Model, IntegerField, CharField, SqliteDatabase
 
-db = SqliteDatabase('resources/db/players.db')
+db = SqliteDatabase('resources/database/players.db')
 
 
 class Download(Model):
