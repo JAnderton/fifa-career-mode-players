@@ -5,6 +5,7 @@ import sys
 import urllib2
 
 from BeautifulSoup import BeautifulSoup
+from peewee import SqliteDatabase
 
 from db_models import Download, Status, db
 
@@ -23,7 +24,8 @@ def __download_page__(page_number):
     logger.info("Processing page %d", page_number)
     link = "http://www.futwiz.com/en/career-mode/players?page=%s" % page_number
 
-    return urllib2.urlopen(urllib2.Request(link, headers={'User-Agent': 'Mozilla/5.0'}))
+    return open('../tests/resources/html/players-0.html', 'r').read()
+    # return urllib2.urlopen(urllib2.Request(link, headers={'User-Agent': 'Mozilla/5.0'}))
 
 
 def __insert_data__(data_tuples):
@@ -53,6 +55,11 @@ def __setup__():
     logger = logging.getLogger()
 
     # Database init
+    __db_path__ = 'resources/database/players.db'
+    if not os.path.exists(os.path.dirname(__db_path__)):
+        os.makedirs(os.path.dirname(__db_path__))
+    global db
+    db.init(__db_path__)
     db.create_table(Download, True)
 
 
